@@ -5,26 +5,27 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 /**
- * Pill button system — Cinematic Editorial.
+ * Pill button system — The Cutting Room.
  * All variants are fully rounded (border-radius: 999px) per the design plan.
- * Subtle lift + soft rose shadow on hover; press settles back down.
+ * Primary: ember fill, lift + ember glow on hover, settle+scale on press.
+ * Ghost: hairline border, ember border/text on hover.
  */
 const buttonVariants = cva(
-  "group/btn inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full font-mono text-[12px] font-bold uppercase tracking-[0.14em] transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-canvas disabled:pointer-events-none disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 will-change-transform",
+  "group/btn inline-flex items-center justify-center gap-2.5 whitespace-nowrap rounded-full font-mono text-[12.5px] uppercase tracking-[0.08em] transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-canvas disabled:pointer-events-none disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 will-change-transform",
   {
     variants: {
       variant: {
-        // rose-filled, dark ink — primary CTA
+        // ember fill, dark ink text — primary CTA
         primary:
-          "bg-rose text-[hsl(var(--accent-foreground))] shadow-[0_1px_0_hsl(var(--ink)/0.25)_inset,0_10px_30px_-12px_hsl(var(--accent)/0.7)] hover:-translate-y-0.5 hover:bg-[hsl(var(--accent))] hover:shadow-[0_1px_0_hsl(var(--ink)/0.3)_inset,0_16px_40px_-14px_hsl(var(--accent)/0.85)] active:translate-y-0",
-        // ghost outline — fills faintly on hover
+          "bg-accent text-[#1a0d07] font-semibold hover:-translate-y-0.5 hover:bg-[color:var(--accent-soft)] hover:shadow-[0_10px_30px_var(--accent-glow)] active:translate-y-0 active:scale-[0.98]",
+        // hairline outline — fills to ember on hover
         ghost:
-          "border border-rose/55 bg-transparent text-ink hover:-translate-y-0.5 hover:border-rose hover:bg-rose/10 hover:shadow-[0_12px_34px_-18px_hsl(var(--accent)/0.6)] active:translate-y-0",
+          "border border-[color:var(--line-2)] bg-transparent text-text hover:-translate-y-0.5 hover:border-accent hover:text-accent active:translate-y-0 active:scale-[0.98]",
         // neutral hairline — tertiary
         outline:
-          "border border-ink/15 bg-transparent text-dim hover:-translate-y-0.5 hover:border-ink/30 hover:text-ink active:translate-y-0",
+          "border border-[color:var(--line)] bg-transparent text-dim hover:-translate-y-0.5 hover:border-[color:var(--line-2)] hover:text-text active:translate-y-0",
         // bare link-ish
-        link: "text-rose underline-offset-4 hover:underline rounded-none px-0 tracking-normal normal-case",
+        link: "text-accent underline-offset-4 hover:underline rounded-none px-0 tracking-normal normal-case",
       },
       size: {
         lg: "h-[54px] px-9 text-[13px]",
