@@ -1,78 +1,75 @@
 import * as React from "react";
-import { SectionHead } from "@/components/SectionHead";
-import { Reveal } from "@/components/Reveal";
-import { gsap, useGSAP, prefersReducedMotion } from "@/lib/gsap";
-import { CAPABILITIES, SERVICES } from "@/data";
+import { CAPABILITIES } from "@/data";
 
-function CapabilityBars() {
-  const root = React.useRef<HTMLDivElement>(null);
-
-  useGSAP(
-    () => {
-      const fills = gsap.utils.toArray<HTMLElement>(".cap-fill");
-      if (prefersReducedMotion()) {
-        fills.forEach((f) => (f.style.width = `${f.dataset.value}%`));
-        return;
-      }
-      fills.forEach((f) =>
-        gsap.to(f, {
-          width: `${f.dataset.value}%`,
-          duration: 1.2,
-          ease: "power3.out",
-          scrollTrigger: { trigger: f, start: "top 90%", once: true },
-        })
-      );
-    },
-    { scope: root }
-  );
-
-  return (
-    <div ref={root} className="space-y-7">
-      {CAPABILITIES.map((c) => (
-        <div key={c.label}>
-          <div className="mb-2.5 flex items-baseline justify-between">
-            <span className="text-[14px] text-ink">{c.label}</span>
-            <span className="font-mono text-[12px] text-rose">{c.value}%</span>
-          </div>
-          <div className="h-0.5 w-full bg-ink/10">
-            <div
-              className="cap-fill h-full w-0 bg-rose shadow-[0_0_8px_hsl(var(--accent)/0.5)]"
-              data-value={c.value}
-            />
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
+const PROCESS_LOG = [
+  { k: "Brief", v: "Understand the goal" },
+  { k: "Cut", v: "Pace, hooks, rhythm" },
+  { k: "Polish", v: "Motion & sound" },
+  { k: "Deliver", v: "On time", accent: true },
+];
 
 export function Skills() {
   return (
-    <section id="skills" className="border-b border-ink/[0.08]">
-      <div className="container py-20 md:py-28">
-        <SectionHead reel="05" label="Capabilities" title="Experience & skills" />
+    <section id="skills" className="section-line" data-clip="07 / SKILLS">
+      <div className="wrap grid gap-[46px] md:grid-cols-2 md:items-start md:gap-[72px]">
+        <div>
+          <div className="mb-9" data-reveal>
+            <h2 className="max-w-[18ch] text-[clamp(2rem,5vw,3.4rem)] text-text">
+              The toolkit.
+            </h2>
+            <p className="mt-[18px] max-w-[56ch] text-dim">
+              Where the hours went, honestly rated.
+            </p>
+          </div>
 
-        <div className="grid gap-12 md:grid-cols-2 md:gap-16">
-          <Reveal>
-            <CapabilityBars />
-          </Reveal>
-
-          <Reveal stagger>
-            {SERVICES.map((s) => (
-              <div
-                key={s.n}
-                className="flex items-baseline gap-4 border-t border-ink/[0.08] py-5 last:border-b"
-              >
-                <span className="font-mono text-[12px] font-bold text-rose">
-                  {s.n}
-                </span>
-                <div>
-                  <div className="font-serif text-xl text-ink">{s.label}</div>
-                  <div className="slate mt-1.5 text-dim">{s.note}</div>
+          <div>
+            {CAPABILITIES.map((c) => (
+              <div key={c.label} data-reveal className="mb-[30px] last:mb-0">
+                <div className="mb-3 flex items-baseline justify-between">
+                  <span className="text-[1.05rem] font-semibold text-text">
+                    {c.label}
+                  </span>
+                  <span className="font-mono text-[13px] tabular-nums text-accent">
+                    {c.value}
+                  </span>
+                </div>
+                <div className="h-0.5 overflow-hidden rounded-full bg-[color:var(--line-2)]">
+                  <div
+                    className="cap-fill h-full rounded-full bg-accent"
+                    style={
+                      {
+                        width: `${c.value}%`,
+                        "--val": `${c.value}%`,
+                      } as React.CSSProperties
+                    }
+                  />
                 </div>
               </div>
             ))}
-          </Reveal>
+          </div>
+        </div>
+
+        <div
+          data-reveal
+          className="mt-2 rounded-[4px] border border-[color:var(--line)] bg-panel"
+        >
+          <div className="flex items-center justify-between border-b border-[color:var(--line)] px-5 py-4 font-mono text-[11px] uppercase tracking-[0.16em] text-dim">
+            <span>process.log</span>
+            <span>//</span>
+          </div>
+          {PROCESS_LOG.map((row) => (
+            <div
+              key={row.k}
+              className="flex items-center justify-between border-b border-[color:var(--line)] px-5 py-[15px] font-mono text-[13px] last:border-b-0"
+            >
+              <span className="text-dim before:mr-1.5 before:text-accent before:content-['>_']">
+                {row.k}
+              </span>
+              <span className={row.accent ? "text-accent" : "text-text"}>
+                {row.v}
+              </span>
+            </div>
+          ))}
         </div>
       </div>
     </section>

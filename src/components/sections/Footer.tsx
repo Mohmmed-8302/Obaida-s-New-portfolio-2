@@ -1,33 +1,17 @@
-import { ArrowUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 
 export function Footer() {
   return (
-    <footer className="border-t border-ink/[0.08]">
-      <div className="container py-14">
-        <div className="flex flex-wrap items-center justify-between gap-6">
-          <div className="font-serif text-3xl text-ink md:text-4xl">
-            Obaida<span className="text-rose">.</span>
-          </div>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          >
-            <ArrowUp className="h-4 w-4" /> Back to top
-          </Button>
+    <footer className="border-t border-[color:var(--line)] pb-10 pt-[54px]">
+      <div className="wrap flex flex-col items-center gap-[26px] sm:flex-row sm:justify-between">
+        <div className="font-display text-2xl font-extrabold text-text">
+          OBAIDA
         </div>
-
-        <Separator className="my-8" />
-
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-dim">
-            © 2024–2026 Obaida — Video / Design
-          </span>
-          <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-dim/70">
-            Crafted frame by frame
-          </span>
+        <Button asChild variant="ghost" size="sm">
+          <a href="#hero">Back to top ↑</a>
+        </Button>
+        <div className="font-mono text-[11px] uppercase tracking-[0.1em] text-dim-2">
+          Short-form video editor · 2026
         </div>
       </div>
     </footer>

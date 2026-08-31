@@ -9,12 +9,10 @@ export const CONTACT = {
 };
 
 export const NAV_LINKS = [
-  { id: "hero", label: "Home" },
-  { id: "studio", label: "Studio" },
+  { id: "work", label: "Work" },
+  { id: "videos", label: "Reel" },
+  { id: "services", label: "Services" },
   { id: "journey", label: "Journey" },
-  { id: "work", label: "Portfolios" },
-  { id: "videos", label: "Videos" },
-  { id: "skills", label: "Skills" },
   { id: "contact", label: "Contact" },
 ];
 
@@ -48,7 +46,7 @@ export const PORTFOLIOS: Portfolio[] = [
     tag: "Corporate",
     title: "IES-BIM",
     meta: "Web Design · Development · Branding",
-    desc: "A professional corporate website for IES-BIM — clean layout, modern structure, built to convert.",
+    desc: "A professional corporate website for IES-BIM. Clean layout, modern structure, built to convert.",
     url: "https://www.ies-bim.com/",
     screenshot: "/assets/screenshots/ies-bim.jpg",
   },

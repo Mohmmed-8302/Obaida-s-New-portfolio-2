@@ -1,64 +1,47 @@
-import { SectionHead } from "@/components/SectionHead";
-import { Reveal } from "@/components/Reveal";
-import { Card } from "@/components/ui/card";
 import { STUDIO_INFO } from "@/data";
 
 export function Studio() {
   return (
-    <section id="studio" className="border-b border-ink/[0.08]">
-      <div className="container py-20 md:py-28">
-        <SectionHead reel="01" label="Studio" title="Who we are" />
-
-        <div className="grid gap-10 md:grid-cols-[minmax(0,320px)_1fr] md:gap-16">
-          {/* Info panel */}
-          <Reveal>
-            <Card className="p-0">
-              <div className="flex items-center gap-2.5 border-b border-ink/[0.08] px-5 py-3">
-                <span className="h-1.5 w-1.5 rounded-full bg-rose" />
-                <span className="font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-dim">
-                  profile.card
-                </span>
-              </div>
-              <dl className="divide-y divide-ink/[0.06]">
-                {STUDIO_INFO.map((row) => (
-                  <div
-                    key={row.k}
-                    className="flex items-center gap-3 px-5 py-3.5 font-mono text-[13px]"
-                  >
-                    <span className="text-rose">&gt;</span>
-                    <dt className="w-20 text-dim">{row.k}</dt>
-                    <dd
-                      className={
-                        row.accent ? "font-bold text-rose" : "text-ink"
-                      }
-                    >
-                      {row.v}
-                    </dd>
-                  </div>
-                ))}
-              </dl>
-            </Card>
-          </Reveal>
-
-          {/* Narrative */}
-          <div>
-            <Reveal>
-              <p className="font-serif text-2xl leading-[1.4] text-ink md:text-[28px]">
-                Self-taught since 2024, Obaida mastered the one thing most
-                creators ignore:{" "}
-                <span className="italic text-rose">
-                  why people stop scrolling.
-                </span>{" "}
-                The work lives under three minutes — tight, intentional, and made
-                to perform.
-              </p>
-            </Reveal>
-            <Reveal delay={0.1}>
-              <p className="mt-8 font-mono text-[13px] font-bold leading-relaxed text-rose">
-                &gt; No templates. No filler. Just work that gets seen._
-              </p>
-            </Reveal>
+    <section id="studio" className="section-line" data-clip="02 / STUDIO">
+      <div className="wrap grid gap-10 md:grid-cols-[320px_1fr] md:items-start md:gap-[72px]">
+        <div
+          data-reveal
+          className="rounded-[4px] border border-[color:var(--line)] bg-panel"
+        >
+          <div className="flex items-center justify-between border-b border-[color:var(--line)] px-5 py-4 font-mono text-[11px] uppercase tracking-[0.16em] text-dim">
+            <span>system_info</span>
+            <span>//</span>
           </div>
+          {STUDIO_INFO.map((row) => (
+            <div
+              key={row.k}
+              className="flex items-center justify-between border-b border-[color:var(--line)] px-5 py-[15px] font-mono text-[13px] last:border-b-0"
+            >
+              <span className="text-dim before:mr-1.5 before:text-accent before:content-['>_']">
+                {row.k}
+              </span>
+              <span className={row.accent ? "text-accent" : "text-text"}>
+                {row.v}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        <div>
+          <p
+            data-reveal
+            className="font-display text-[clamp(1.25rem,2.6vw,1.9rem)] font-semibold leading-[1.28] tracking-[-0.01em] text-text"
+          >
+            I treat every clip like it is the one that has to{" "}
+            <span className="italic text-accent">land the client.</span>{" "}
+            Tight pacing, clean motion, and hooks that earn the next three
+            seconds.
+          </p>
+          <p data-reveal className="mt-6 max-w-[54ch] text-dim">
+            Self-taught, then obsessed. I work across gaming, education, and
+            awareness content, and I design the portfolio pages that make the
+            work sell. If it does not hold attention, it does not ship.
+          </p>
         </div>
       </div>
     </section>

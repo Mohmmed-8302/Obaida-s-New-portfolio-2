@@ -1,33 +1,29 @@
-import { SectionHead } from "@/components/SectionHead";
-import { Reveal } from "@/components/Reveal";
 import { JOURNEY } from "@/data";
 
 export function Journey() {
   return (
-    <section id="journey" className="border-b border-ink/[0.08]">
-      <div className="container py-20 md:py-28">
-        <SectionHead reel="02" label="Journey" title="Obaida's story" />
+    <section id="journey" className="section-line" data-clip="04 / JOURNEY">
+      <div className="wrap">
+        <div className="mb-[54px]" data-reveal>
+          <h2 className="max-w-[18ch] text-[clamp(2rem,5vw,3.4rem)] text-text">
+            From first cut to went viral.
+          </h2>
+        </div>
 
-        <div className="relative">
-          {/* vertical rail */}
-          <div className="absolute left-[5px] top-2 bottom-2 w-px bg-gradient-to-b from-rose/60 via-ink/15 to-transparent" />
-          <div className="flex flex-col">
-            {JOURNEY.map((entry) => (
-              <Reveal key={entry.year} className="relative pl-8 pb-12 last:pb-0">
-                {/* node */}
-                <span className="absolute left-0 top-2 h-[11px] w-[11px] rounded-full bg-rose shadow-[0_0_10px_hsl(var(--accent)/0.6)] ring-4 ring-canvas" />
-                <div className="font-mono text-4xl font-bold text-rose [text-shadow:0_0_18px_hsl(var(--accent)/0.3)] md:text-5xl">
-                  {entry.year}
-                </div>
-                <h3 className="mt-3 font-serif text-xl text-ink">
-                  {entry.title}
-                </h3>
-                <p className="mt-2 max-w-[48ch] text-[14px] leading-relaxed text-dim">
-                  {entry.desc}
-                </p>
-              </Reveal>
-            ))}
-          </div>
+        <div className="relative pl-[34px] before:absolute before:bottom-2 before:left-1 before:top-2 before:w-px before:bg-[color:var(--line-2)] before:content-['']">
+          {JOURNEY.map((entry) => (
+            <div
+              key={entry.year}
+              data-reveal
+              className="relative pb-[54px] before:absolute before:-left-[34px] before:top-1.5 before:h-[9px] before:w-[9px] before:rounded-full before:bg-accent before:shadow-[0_0_0_4px_var(--accent-glow)] before:content-[''] last:pb-0"
+            >
+              <div className="font-mono text-[13px] tracking-[0.1em] text-accent">
+                {entry.year}
+              </div>
+              <h3 className="mt-2 text-[1.7rem] text-text">{entry.title}</h3>
+              <p className="mt-2.5 max-w-[48ch] text-dim">{entry.desc}</p>
+            </div>
+          ))}
         </div>
       </div>
     </section>

@@ -1,117 +1,74 @@
 import * as React from "react";
-import { ArrowUpRight, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { gsap, useGSAP, prefersReducedMotion } from "@/lib/gsap";
 import { HERO_STATS } from "@/data";
+import { cn } from "@/lib/utils";
 
+/**
+ * Static hero — the load-in stagger (eyebrow -> headline -> sub -> CTAs ->
+ * stats) is added in Task 4 against the `data-reveal` targets below.
+ */
 export function Hero() {
   const root = React.useRef<HTMLElement>(null);
-
-  useGSAP(
-    () => {
-      if (prefersReducedMotion()) return;
-      const tl = gsap.timeline({
-        defaults: { ease: "power3.out", duration: 0.9 },
-        delay: 0.15,
-      });
-      tl.from(".hero-top", { opacity: 0, y: -12, duration: 0.7 })
-        .from(".hero-eyebrow", { opacity: 0, y: 16 }, "-=0.35")
-        .from(
-          ".hero-line",
-          { opacity: 0, yPercent: 110, stagger: 0.12, duration: 1 },
-          "-=0.5"
-        )
-        .from(".hero-lead", { opacity: 0, y: 18 }, "-=0.6")
-        .from(".hero-cta", { opacity: 0, y: 18 }, "-=0.6")
-        .from(
-          ".hero-stat",
-          { opacity: 0, y: 20, stagger: 0.08 },
-          "-=0.55"
-        );
-    },
-    { scope: root }
-  );
-
-  const go = (id: string) =>
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 
   return (
     <section
       id="hero"
       ref={root}
-      className="vignette relative flex min-h-svh items-center overflow-hidden pt-24"
+      data-clip="01 / HERO"
+      className="flex min-h-[100dvh] flex-col justify-center pb-10 pt-[92px]"
     >
-      {/* faint frame corners — film gate */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-6 hidden border border-ink/[0.05] md:block"
-      />
-
-      <div className="container relative py-16">
-        {/* top row: logo + availability */}
-        <div className="hero-top mb-12 flex items-center justify-between md:mb-16">
-          <img
-            src="/assets/logos/logo-glow.png"
-            alt="Obaida"
-            className="h-10 w-auto drop-shadow-[0_0_18px_hsl(var(--accent)/0.4)] md:h-12"
-          />
-          <div className="flex items-center gap-2.5 rounded-full border border-rose/25 bg-rose/[0.06] px-4 py-2">
-            <span className="h-1.5 w-1.5 animate-rose-pulse rounded-full bg-rose" />
-            <span className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-rose">
-              Available · 2026
-            </span>
-          </div>
+      <div className="wrap">
+        <div className="mb-[30px] flex items-center gap-3.5" data-reveal>
+          <span className="h-[7px] w-[7px] rounded-full bg-accent shadow-[0_0_10px_var(--accent)]" />
+          <span className="mono">Video Editor &amp; Motion Designer</span>
         </div>
 
-        <div className="hero-eyebrow reel-cue mb-6">
-          <span className="slate-rose">Video Editor</span>
-          <span className="reel-cue-line" />
-          <span className="slate">Portfolio Designer</span>
-        </div>
-
-        {/* headline — clipped line reveal */}
-        <h1 className="display max-w-[15ch] text-balance">
-          <span className="block overflow-hidden">
-            <span className="hero-line block">Short-form video</span>
-          </span>
-          <span className="block overflow-hidden">
-            <span className="hero-line block">that makes people</span>
-          </span>
-          <span className="block overflow-hidden">
-            <span className="hero-line block">
-              <span className="display-em">stop scrolling.</span>
-            </span>
-          </span>
+        <h1
+          data-reveal
+          className="max-w-[15ch] text-[clamp(2.6rem,8.5vw,6.6rem)] font-extrabold leading-[1.02] tracking-[-0.02em] text-text"
+        >
+          I cut short-form that people actually{" "}
+          <em className="italic leading-[1.1] text-accent">finish.</em>
         </h1>
 
-        <p className="hero-lead lead mt-8 max-w-[52ch]">
-          Obaida crafts viral gaming edits, education content, and awareness
-          clips — every frame engineered to hold attention. No templates. No
-          filler.
+        <p
+          data-reveal
+          className="mt-[30px] max-w-[52ch] text-[clamp(1rem,1.7vw,1.22rem)] leading-[1.55] text-dim"
+        >
+          Gaming edits, motion graphics, and awareness content built to stop
+          the scroll and keep it. Under three minutes, every time.
         </p>
 
-        <div className="hero-cta mt-10 flex flex-wrap items-center gap-4">
-          <Button size="lg" variant="primary" onClick={() => go("work")}>
-            <Play className="fill-current" /> View selected work
+        <div data-reveal className="mt-10 flex flex-wrap gap-3.5">
+          <Button asChild variant="primary" size="lg">
+            <a href="#contact">Start a project</a>
           </Button>
-          <Button size="lg" variant="ghost" onClick={() => go("contact")}>
-            Get in touch <ArrowUpRight />
+          <Button asChild variant="ghost" size="lg">
+            <a href="#videos">
+              <span
+                aria-hidden
+                className="h-0 w-0 border-y-[5px] border-l-[8px] border-y-transparent border-l-current"
+              />
+              Watch the reel
+            </a>
           </Button>
         </div>
+      </div>
 
-        {/* stats — hairline-divided cells */}
-        <div className="mt-16 grid grid-cols-2 border-t border-ink/[0.08] md:mt-24 md:grid-cols-4">
+      <div className="wrap mt-12 md:mt-[90px]" data-reveal>
+        <div className="grid grid-cols-2 border-t border-[color:var(--line)] sm:grid-cols-4">
           {HERO_STATS.map((s, i) => (
             <div
               key={s.label}
-              className={`hero-stat border-b border-ink/[0.08] py-6 pr-6 md:border-b-0 ${
-                i !== 0 ? "md:border-l md:border-ink/[0.08] md:pl-6" : ""
-              } ${i % 2 !== 0 ? "border-l border-ink/[0.08] pl-6 md:pl-6" : ""}`}
+              className={cn(
+                "border-b border-[color:var(--line)] py-[26px] pr-2 sm:border-b-0 sm:border-l sm:border-[color:var(--line)] sm:pl-[22px]",
+                i === 0 && "sm:border-l-0 sm:pl-0"
+              )}
             >
-              <div className="font-mono text-3xl font-bold text-rose [text-shadow:0_0_20px_hsl(var(--accent)/0.3)] md:text-4xl">
+              <b className="block font-display text-[clamp(1.8rem,3.4vw,2.7rem)] font-bold tracking-[-0.02em] text-text">
                 {s.value}
-              </div>
-              <div className="slate mt-2 text-dim">{s.label}</div>
+              </b>
+              <span className="mono">{s.label}</span>
             </div>
           ))}
         </div>

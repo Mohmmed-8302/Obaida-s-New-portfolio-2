@@ -1,62 +1,54 @@
-import { ArrowUpRight } from "lucide-react";
-import { SectionHead } from "@/components/SectionHead";
-import { Reveal } from "@/components/Reveal";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { PORTFOLIOS } from "@/data";
 
 export function Work() {
-  return (
-    <section id="work" className="border-b border-ink/[0.08]">
-      <div className="container py-20 md:py-28">
-        <SectionHead reel="03" label="Portfolios" title="Sites built to convert" />
+  const item = PORTFOLIOS[0];
 
-        <Reveal
-          stagger
-          className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+  return (
+    <section id="work" className="section-line" data-clip="05 / WORK">
+      <div className="wrap">
+        <div className="mb-[54px]" data-reveal>
+          <h2 className="max-w-[18ch] text-[clamp(2rem,5vw,3.4rem)] text-text">
+            Selected work.
+          </h2>
+          <p className="mt-[18px] max-w-[56ch] text-dim">
+            Client sites and brand pages, designed and built to convert.
+          </p>
+        </div>
+
+        <div
+          data-reveal
+          className="group max-w-[940px] overflow-hidden rounded-[6px] border border-[color:var(--line)] bg-panel transition-colors duration-[400ms] hover:border-[color:var(--line-2)]"
         >
-          {PORTFOLIOS.map((item) => (
+          <div className="relative aspect-[16/10] overflow-hidden">
+            <span className="absolute left-[18px] top-[18px] z-10 rounded-full border border-[color:var(--line-2)] bg-canvas/70 px-3 py-[7px] font-mono text-[11px] uppercase tracking-[0.14em] text-text backdrop-blur-[6px]">
+              {item.tag}
+            </span>
+            <img
+              src={item.screenshot}
+              alt={`${item.title} website preview`}
+              className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-[600ms] ease-[var(--ease)] group-hover:scale-[1.04]"
+              loading="lazy"
+            />
+          </div>
+          <div className="px-[34px] pb-[34px] pt-[30px]">
+            <h3 className="text-[2rem] text-text">{item.title}</h3>
+            <div className="mt-3 font-mono text-xs uppercase tracking-[0.08em] text-dim">
+              {item.meta}
+            </div>
+            {/* single-accent rule: no em-dashes in visible copy */}
+            <p className="mt-4 max-w-[58ch] text-dim">
+              {item.desc.replace(/\s*—\s*/g, ", ")}
+            </p>
             <a
-              key={item.title}
               href={item.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="group block max-w-[560px]"
+              className="mt-[22px] inline-flex items-center gap-2 font-mono text-[12.5px] uppercase tracking-[0.08em] text-accent transition-[gap] duration-200 hover:gap-3.5"
             >
-              <Card className="h-full hover:border-rose/40 hover:shadow-[0_28px_70px_-40px_hsl(var(--accent)/0.5)]">
-                <div className="relative aspect-[4/3] overflow-hidden border-b border-ink/[0.08]">
-                  <Badge className="absolute left-3 top-3 z-10">
-                    {item.tag}
-                  </Badge>
-                  <img
-                    src={item.screenshot}
-                    alt={`${item.title} website preview`}
-                    className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
-                    loading="lazy"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-canvas/70 via-transparent to-transparent" />
-                  <div className="absolute inset-0 flex items-center justify-center bg-canvas/40 opacity-0 backdrop-blur-[1px] transition-opacity duration-300 group-hover:opacity-100">
-                    <span className="flex items-center gap-2 rounded-full border border-rose/50 bg-canvas/70 px-4 py-2 font-mono text-[11px] font-bold uppercase tracking-[0.16em] text-rose">
-                      Visit site <ArrowUpRight className="h-3.5 w-3.5" />
-                    </span>
-                  </div>
-                </div>
-                <div className="flex flex-1 flex-col p-5">
-                  <div className="flex items-start justify-between gap-3">
-                    <h3 className="font-serif text-2xl text-ink">
-                      {item.title}
-                    </h3>
-                    <ArrowUpRight className="mt-1 h-5 w-5 shrink-0 text-dim transition-colors group-hover:text-rose" />
-                  </div>
-                  <p className="mt-3 flex-1 text-[14px] leading-relaxed text-dim">
-                    {item.desc}
-                  </p>
-                  <div className="slate mt-5 text-dim">{item.meta}</div>
-                </div>
-              </Card>
+              Visit site ↗
             </a>
-          ))}
-        </Reveal>
+          </div>
+        </div>
       </div>
     </section>
   );
