@@ -1,0 +1,166 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─────────────────────────  BRAND FONTS  ───────────────────────── */
+@font-face {
+  font-family: "Cambria Custom";
+  src: url("/assets/fonts/Cambria-Regular.ttf") format("truetype");
+  font-weight: 400 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Courier New Custom";
+  src: url("/assets/fonts/CourierNew-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Courier New Custom";
+  src: url("/assets/fonts/CourierNew-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-display: swap;
+}
+
+/* ─────────────────────  DESIGN TOKENS (HSL)  ───────────────────── */
+@layer base {
+  :root {
+    --bg: 240 8% 5%; /* #0b0b0d near-black canvas          */
+    --bg-panel: 240 6% 8%; /* #141416 cards / info panels        */
+    --ink: 30 26% 95%; /* #f5f1ee warm off-white            */
+    --text-dim: 30 6% 58%; /* #9a948f warm gray secondary text  */
+    --accent: 348 42% 63%; /* #c97a8a dusty rose (brand)        */
+    --accent-deep: 345 38% 39%; /* #8a3e51 rose pressed              */
+    --accent-foreground: 240 10% 7%; /* near-black text on rose fill      */
+    --line: 30 26% 95%; /* hairline base (used w/ alpha)     */
+
+    /* shadcn semantic */
+    --border: 240 7% 14%;
+    --input: 240 7% 16%;
+    --ring: 348 42% 63%;
+    --radius: 0.55rem;
+  }
+}
+
+/* ───────────────────────────  BASE  ────────────────────────────── */
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-canvas text-ink font-sans antialiased;
+    overflow-x: hidden;
+    font-feature-settings: "cv11", "ss01";
+    text-rendering: optimizeLegibility;
+  }
+  ::selection {
+    background: hsl(var(--accent));
+    color: hsl(var(--accent-foreground));
+  }
+  /* Scrollbar */
+  ::-webkit-scrollbar {
+    width: 11px;
+  }
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--bg));
+  }
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--accent-deep));
+  }
+  :focus-visible {
+    outline: 2px solid hsl(var(--accent));
+    outline-offset: 3px;
+  }
+}
+
+/* ───────────────────────  SIGNATURE UTILITIES  ─────────────────── */
+@layer components {
+  /* Film-slate / timecode label */
+  .slate {
+    @apply font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-dim;
+  }
+  .slate-rose {
+    @apply font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-rose;
+  }
+
+  /* Editorial display headline */
+  .display {
+    @apply font-serif font-normal leading-[1.02] tracking-[-0.02em] text-ink;
+    font-size: clamp(2.5rem, 8vw, 5.75rem);
+  }
+  .display-em {
+    @apply font-serif italic text-rose;
+    text-shadow: 0 0 40px hsl(var(--accent) / 0.35);
+  }
+  .h2 {
+    @apply font-serif font-normal leading-[1.05] tracking-[-0.015em] text-ink;
+    font-size: clamp(1.9rem, 5vw, 3.3rem);
+  }
+  .lead {
+    @apply font-sans text-[15px] leading-[1.75] text-dim md:text-[17px];
+  }
+
+  /* Hairline dividers / edges */
+  .hair {
+    @apply border-ink/[0.08];
+  }
+  .hair-t {
+    @apply border-t border-ink/[0.08];
+  }
+  .hair-b {
+    @apply border-b border-ink/[0.08];
+  }
+
+  /* Reel eyebrow row: REEL 01 · STUDIO */
+  .reel-cue {
+    @apply flex items-center gap-3;
+  }
+  .reel-cue-line {
+    @apply h-px w-10 bg-rose/40;
+  }
+}
+
+@layer utilities {
+  /* Warm radial vignette used behind hero / contact */
+  .vignette {
+    background:
+      radial-gradient(
+        120% 80% at 50% -10%,
+        hsl(var(--accent) / 0.07) 0%,
+        transparent 55%
+      ),
+      radial-gradient(90% 60% at 100% 110%, hsl(var(--accent) / 0.05) 0%, transparent 60%);
+  }
+  /* Faint film-grain overlay (fixed, non-interactive) */
+  .grain::after {
+    content: "";
+    position: fixed;
+    inset: -50%;
+    z-index: 60;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+  .grain::after {
+    animation: none !important;
+  }
+}
