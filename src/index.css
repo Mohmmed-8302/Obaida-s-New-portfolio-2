@@ -2,43 +2,42 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ─────────────────────────  BRAND FONTS  ───────────────────────── */
-@font-face {
-  font-family: "Cambria Custom";
-  src: url("/assets/fonts/Cambria-Regular.ttf") format("truetype");
-  font-weight: 400 700;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Courier New Custom";
-  src: url("/assets/fonts/CourierNew-Regular.ttf") format("truetype");
-  font-weight: 400;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Courier New Custom";
-  src: url("/assets/fonts/CourierNew-Bold.ttf") format("truetype");
-  font-weight: 700;
-  font-display: swap;
-}
+/* ═══════════════════════  THE CUTTING ROOM  ═══════════════════════
+   Dark-committed cinematic canvas. Single ember accent. Grotesque +
+   mono type. NLE/timeline motifs. Source of truth:
+   docs/design/cutting-room-prototype.html
+   ════════════════════════════════════════════════════════════════ */
 
-/* ─────────────────────  DESIGN TOKENS (HSL)  ───────────────────── */
+/* ─────────────────────  DESIGN TOKENS (raw)  ─────────────────────── */
 @layer base {
   :root {
-    --bg: 240 8% 5%; /* #0b0b0d near-black canvas          */
-    --bg-panel: 240 6% 8%; /* #141416 cards / info panels        */
-    --ink: 30 26% 95%; /* #f5f1ee warm off-white            */
-    --text-dim: 30 6% 58%; /* #9a948f warm gray secondary text  */
-    --accent: 348 42% 63%; /* #c97a8a dusty rose (brand)        */
-    --accent-deep: 345 38% 39%; /* #8a3e51 rose pressed              */
-    --accent-foreground: 240 10% 7%; /* near-black text on rose fill      */
-    --line: 30 26% 95%; /* hairline base (used w/ alpha)     */
+    --bg: #0b0c0e;
+    --panel: #101216;
+    --elev: #16191f;
+    --line: rgba(255, 255, 255, 0.08);
+    --line-2: rgba(255, 255, 255, 0.15);
+    --text: #f3efe8;
+    --dim: #8a8f97;
+    --dim-2: #5c616a;
+    --accent: #ff6a3d;
+    --accent-soft: #ff8a63;
+    --accent-deep: #c8431f;
+    --accent-glow: rgba(255, 106, 61, 0.18);
+    --accent-foreground: #1a0d07;
 
-    /* shadcn semantic */
-    --border: 240 7% 14%;
-    --input: 240 7% 16%;
-    --ring: 348 42% 63%;
-    --radius: 0.55rem;
+    --display: "Bricolage Grotesque", "Arial Black", sans-serif;
+    --body: "Hanken Grotesk", system-ui, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+
+    --rail: 68px;
+    --maxw: 1240px;
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    --radius: 6px;
+
+    /* shadcn semantic aliases (dark-committed, no theme switch) */
+    --border: var(--line);
+    --input: var(--line-2);
+    --ring: var(--accent);
   }
 }
 
@@ -46,111 +45,240 @@
 @layer base {
   * {
     @apply border-border;
+    box-sizing: border-box;
   }
   html {
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
   }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
   body {
     @apply bg-canvas text-ink font-sans antialiased;
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.6;
     overflow-x: hidden;
     font-feature-settings: "cv11", "ss01";
     text-rendering: optimizeLegibility;
   }
-  ::selection {
-    background: hsl(var(--accent));
-    color: hsl(var(--accent-foreground));
+
+  /* subtle filmic grain + vignette, fixed and non-interactive */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 90;
+    background:
+      radial-gradient(120% 90% at 50% 0%, transparent 55%, rgba(0, 0, 0, 0.55) 100%),
+      radial-gradient(80% 60% at 50% 120%, var(--accent-glow), transparent 60%);
+    opacity: 0.9;
   }
-  /* Scrollbar */
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+  img {
+    max-width: 100%;
+    display: block;
+  }
+  h1,
+  h2,
+  h3 {
+    margin: 0;
+    font-family: var(--display);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.02;
+    text-wrap: balance;
+  }
+  p {
+    margin: 0;
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: var(--accent-foreground);
+  }
   ::-webkit-scrollbar {
     width: 11px;
   }
   ::-webkit-scrollbar-track {
-    background: hsl(var(--bg));
+    background: var(--bg);
   }
   ::-webkit-scrollbar-thumb {
-    background: hsl(var(--border));
+    background: var(--line-2);
     border-radius: 999px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: hsl(var(--accent-deep));
+    background: var(--accent-deep);
   }
   :focus-visible {
-    outline: 2px solid hsl(var(--accent));
+    outline: 2px solid var(--accent);
     outline-offset: 3px;
+    border-radius: 2px;
   }
 }
 
-/* ───────────────────────  SIGNATURE UTILITIES  ─────────────────── */
+/* ─────────────────────  GLOBAL LAYOUT PRIMITIVES  ────────────────── */
 @layer components {
-  /* Film-slate / timecode label */
-  .slate {
-    @apply font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-dim;
+  .wrap {
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 0 28px;
   }
-  .slate-rose {
-    @apply font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-rose;
-  }
-
-  /* Editorial display headline */
-  .display {
-    @apply font-serif font-normal leading-[1.02] tracking-[-0.02em] text-ink;
-    font-size: clamp(2.5rem, 8vw, 5.75rem);
-  }
-  .display-em {
-    @apply font-serif italic text-rose;
-    text-shadow: 0 0 40px hsl(var(--accent) / 0.35);
-  }
-  .h2 {
-    @apply font-serif font-normal leading-[1.05] tracking-[-0.015em] text-ink;
-    font-size: clamp(1.9rem, 5vw, 3.3rem);
-  }
-  .lead {
-    @apply font-sans text-[15px] leading-[1.75] text-dim md:text-[17px];
+  @media (min-width: 900px) {
+    .wrap {
+      padding: 0 56px 0 calc(var(--rail) + 40px);
+    }
   }
 
-  /* Hairline dividers / edges */
-  .hair {
-    @apply border-ink/[0.08];
+  .mono {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--dim);
   }
-  .hair-t {
-    @apply border-t border-ink/[0.08];
-  }
-  .hair-b {
-    @apply border-b border-ink/[0.08];
+  .accent {
+    color: var(--accent);
   }
 
-  /* Reel eyebrow row: REEL 01 · STUDIO */
-  .reel-cue {
-    @apply flex items-center gap-3;
+  section {
+    position: relative;
+    padding: clamp(84px, 12vw, 150px) 0;
   }
-  .reel-cue-line {
-    @apply h-px w-10 bg-rose/40;
+  .section-line {
+    border-top: 1px solid var(--line);
+  }
+
+  /* ---------- Reveal system (only hidden while GSAP is armed) ---------- */
+  html.anim [data-reveal] {
+    opacity: 0;
+    transform: translateY(26px);
+  }
+
+  /* ================= LEFT TIMECODE RAIL ================= */
+  .rail {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: var(--rail);
+    border-right: 1px solid var(--line);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent);
+    z-index: 70;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 0;
+  }
+  @media (min-width: 900px) {
+    .rail {
+      display: flex;
+    }
+  }
+
+  .rail-tc {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    margin-bottom: auto;
+    font-variant-numeric: tabular-nums;
+  }
+  .rail-track {
+    position: absolute;
+    top: 90px;
+    bottom: 90px;
+    left: 50%;
+    width: 1px;
+    background: var(--line-2);
+    transform: translateX(-50%);
+  }
+  .rail-head {
+    position: absolute;
+    left: 50%;
+    top: 90px;
+    width: 11px;
+    height: 11px;
+    margin-left: -5.5px;
+    margin-top: -5.5px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-glow), 0 0 14px var(--accent);
+    z-index: 2;
+    transition: none;
+  }
+  .rail-clip {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-top: auto;
+    font-variant-numeric: tabular-nums;
+  }
+  .rail-clip b {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  /* ================= MARQUEE ================= */
+  .marquee {
+    overflow: hidden;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 22px 0;
+    background: var(--panel);
+  }
+  .marquee-track {
+    display: flex;
+    gap: 48px;
+    width: max-content;
+    animation: scroll-x 26s linear infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-track {
+      animation: none;
+      flex-wrap: wrap;
+    }
+  }
+  .marquee-track:hover {
+    animation-play-state: paused;
+  }
+  .marquee-item {
+    display: flex;
+    align-items: center;
+    gap: 48px;
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(1.4rem, 3vw, 2.2rem);
+    color: var(--dim);
+    white-space: nowrap;
+  }
+  .marquee-item::after {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex: none;
   }
 }
 
-@layer utilities {
-  /* Warm radial vignette used behind hero / contact */
-  .vignette {
-    background:
-      radial-gradient(
-        120% 80% at 50% -10%,
-        hsl(var(--accent) / 0.07) 0%,
-        transparent 55%
-      ),
-      radial-gradient(90% 60% at 100% 110%, hsl(var(--accent) / 0.05) 0%, transparent 60%);
-  }
-  /* Faint film-grain overlay (fixed, non-interactive) */
-  .grain::after {
-    content: "";
-    position: fixed;
-    inset: -50%;
-    z-index: 60;
-    pointer-events: none;
-    opacity: 0.035;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  }
-  .text-balance {
-    text-wrap: balance;
+@keyframes scroll-x {
+  to {
+    transform: translateX(-50%);
   }
 }
 
@@ -159,8 +287,5 @@
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
-  }
-  .grain::after {
-    animation: none !important;
   }
 }
