@@ -1,5 +1,6 @@
 import * as React from "react";
 import { CAPABILITIES } from "@/data";
+import { useGSAP, prefersReducedMotion, revealOnScroll, fillCapBars } from "@/lib/gsap";
 
 const PROCESS_LOG = [
   { k: "Brief", v: "Understand the goal" },
@@ -9,8 +10,19 @@ const PROCESS_LOG = [
 ];
 
 export function Skills() {
+  const root = React.useRef<HTMLElement>(null);
+
+  useGSAP(
+    () => {
+      if (prefersReducedMotion()) return;
+      revealOnScroll(root.current!);
+      fillCapBars(root.current!);
+    },
+    { scope: root }
+  );
+
   return (
-    <section id="skills" className="section-line" data-clip="07 / SKILLS">
+    <section id="skills" ref={root} className="section-line" data-clip="07 / SKILLS">
       <div className="wrap grid gap-[46px] md:grid-cols-2 md:items-start md:gap-[72px]">
         <div>
           <div className="mb-9" data-reveal>

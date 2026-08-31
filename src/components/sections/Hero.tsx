@@ -2,13 +2,33 @@ import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { HERO_STATS } from "@/data";
 import { cn } from "@/lib/utils";
+import { gsap, useGSAP, prefersReducedMotion } from "@/lib/gsap";
 
 /**
- * Static hero — the load-in stagger (eyebrow -> headline -> sub -> CTAs ->
- * stats) is added in Task 4 against the `data-reveal` targets below.
+ * Hero load-in sequence: eyebrow -> headline -> sub -> CTAs -> stats stagger
+ * in on mount (no scroll trigger -- this is above-the-fold on load).
  */
 export function Hero() {
   const root = React.useRef<HTMLElement>(null);
+
+  useGSAP(
+    () => {
+      if (prefersReducedMotion()) return;
+      const targets = gsap.utils.toArray<HTMLElement>(
+        "[data-reveal]",
+        root.current
+      );
+      gsap.to(targets, {
+        opacity: 1,
+        y: 0,
+        duration: 0.9,
+        ease: "power3.out",
+        stagger: 0.09,
+        delay: 0.15,
+      });
+    },
+    { scope: root }
+  );
 
   return (
     <section

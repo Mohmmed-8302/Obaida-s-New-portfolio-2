@@ -1,12 +1,61 @@
 import * as React from "react";
+import { gsap, ScrollTrigger, useGSAP, prefersReducedMotion } from "@/lib/gsap";
 
 /**
- * Fixed left timecode rail (desktop >=900px only, hidden via .rail CSS in index.css).
- * Static markup + refs only — GSAP (playhead position, timecode tick, active clip
- * label) is wired up in Task 4 via the ids below.
+ * Fixed left timecode rail (desktop >=900px only, hidden via .rail CSS in
+ * index.css). Wires up: the scroll-linked playhead position + timecode
+ * text, and the active-clip label that tracks whichever section is
+ * currently in view.
  */
 export function Rail() {
   const root = React.useRef<HTMLDivElement>(null);
+
+  useGSAP(
+    () => {
+      if (prefersReducedMotion()) return;
+
+      const railHead = root.current?.querySelector<HTMLElement>(".rail-head");
+      const railTc = root.current?.querySelector<HTMLElement>(".rail-tc");
+      const railClip = root.current?.querySelector<HTMLElement>("#railClip");
+      const track = root.current?.querySelector<HTMLElement>(".rail-track");
+      if (!railHead || !railTc || !railClip || !track) return;
+
+      const pad = (n: number) => (n < 10 ? `0${n}` : `${n}`);
+      const FAKE_DURATION = 254; // seconds of "reel" mapped across full scroll
+
+      // Playhead position + running timecode, driven by total document scroll.
+      ScrollTrigger.create({
+        start: 0,
+        end: "max",
+        onUpdate: (self) => {
+          const progress = self.progress;
+          const trackHeight = track.offsetHeight;
+          gsap.set(railHead, { y: progress * trackHeight });
+
+          const total = progress * FAKE_DURATION;
+          const mm = Math.floor(total / 60);
+          const ss = Math.floor(total % 60);
+          const ff = Math.floor((total % 1) * 24);
+          railTc.textContent = `00:${pad(mm)}:${pad(ss)}:${pad(ff)}`;
+        },
+      });
+
+      // Active-clip label: whichever section is centered updates #railClip.
+      const sections = gsap.utils.toArray<HTMLElement>("section[data-clip]");
+      sections.forEach((sec) => {
+        ScrollTrigger.create({
+          trigger: sec,
+          start: "top 55%",
+          end: "bottom 55%",
+          onToggle: (self) => {
+            if (!self.isActive) return;
+            railClip.textContent = sec.dataset.clip ?? "";
+          },
+        });
+      });
+    },
+    { scope: root }
+  );
 
   return (
     <div ref={root} className="rail" aria-hidden="true">

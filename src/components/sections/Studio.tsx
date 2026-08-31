@@ -1,8 +1,25 @@
+import * as React from "react";
 import { STUDIO_INFO } from "@/data";
+import { useGSAP, prefersReducedMotion, revealOnScroll } from "@/lib/gsap";
 
 export function Studio() {
+  const root = React.useRef<HTMLElement>(null);
+
+  useGSAP(
+    () => {
+      if (prefersReducedMotion()) return;
+      revealOnScroll(root.current!);
+    },
+    { scope: root }
+  );
+
   return (
-    <section id="studio" className="section-line" data-clip="02 / STUDIO">
+    <section
+      id="studio"
+      ref={root}
+      className="section-line"
+      data-clip="02 / STUDIO"
+    >
       <div className="wrap grid gap-10 md:grid-cols-[320px_1fr] md:items-start md:gap-[72px]">
         <div
           data-reveal

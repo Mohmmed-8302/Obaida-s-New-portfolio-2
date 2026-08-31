@@ -3,9 +3,19 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { CONTACT } from "@/data";
+import { useGSAP, prefersReducedMotion, revealOnScroll } from "@/lib/gsap";
 
 export function Contact() {
   const [status, setStatus] = React.useState("");
+  const root = React.useRef<HTMLElement>(null);
+
+  useGSAP(
+    () => {
+      if (prefersReducedMotion()) return;
+      revealOnScroll(root.current!);
+    },
+    { scope: root }
+  );
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -39,7 +49,12 @@ export function Contact() {
   ];
 
   return (
-    <section id="contact" className="section-line" data-clip="08 / CONTACT">
+    <section
+      id="contact"
+      ref={root}
+      className="section-line"
+      data-clip="08 / CONTACT"
+    >
       <div className="wrap grid gap-12 md:grid-cols-2 md:items-start md:gap-[72px]">
         <div>
           <h2

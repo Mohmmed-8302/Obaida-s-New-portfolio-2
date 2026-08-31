@@ -1,8 +1,25 @@
+import * as React from "react";
 import { JOURNEY } from "@/data";
+import { useGSAP, prefersReducedMotion, revealOnScroll } from "@/lib/gsap";
 
 export function Journey() {
+  const root = React.useRef<HTMLElement>(null);
+
+  useGSAP(
+    () => {
+      if (prefersReducedMotion()) return;
+      revealOnScroll(root.current!);
+    },
+    { scope: root }
+  );
+
   return (
-    <section id="journey" className="section-line" data-clip="04 / JOURNEY">
+    <section
+      id="journey"
+      ref={root}
+      className="section-line"
+      data-clip="04 / JOURNEY"
+    >
       <div className="wrap">
         <div className="mb-[54px]" data-reveal>
           <h2 className="max-w-[18ch] text-[clamp(2rem,5vw,3.4rem)] text-text">

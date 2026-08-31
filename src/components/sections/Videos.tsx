@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Volume2, VolumeX, Maximize } from "lucide-react";
 import { VIDEOS, type VideoItem } from "@/data";
+import { useGSAP, prefersReducedMotion, revealOnScroll } from "@/lib/gsap";
 
 function VideoCard({ video }: { video: VideoItem }) {
   const ref = React.useRef<HTMLVideoElement>(null);
@@ -102,8 +103,18 @@ function VideoCard({ video }: { video: VideoItem }) {
 }
 
 export function Videos() {
+  const root = React.useRef<HTMLElement>(null);
+
+  useGSAP(
+    () => {
+      if (prefersReducedMotion()) return;
+      revealOnScroll(root.current!);
+    },
+    { scope: root }
+  );
+
   return (
-    <section id="videos" className="section-line" data-clip="06 / REEL">
+    <section id="videos" ref={root} className="section-line" data-clip="06 / REEL">
       <div className="wrap">
         <div className="mb-[54px]" data-reveal>
           <h2 className="max-w-[18ch] text-[clamp(2rem,5vw,3.4rem)] text-text">

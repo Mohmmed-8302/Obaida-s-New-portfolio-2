@@ -2,20 +2,65 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { NAV_LINKS } from "@/data";
+import { gsap, ScrollTrigger, useGSAP, prefersReducedMotion } from "@/lib/gsap";
 
 /**
  * Fixed top nav. `.scrolled` toggling and `.active` link tracking are wired
- * up in Task 4 via ScrollTrigger (DOM classList, no React state) — this
- * component just exposes the hooks: `#nav`, `.nav-link` (href matches
- * section id), and the `[&.scrolled]` / `[&.active]` style variants below.
+ * up here via ScrollTrigger (DOM classList, no React state, no window
+ * scroll listener) against the `[&.scrolled]` / `[&.active]` style variants
+ * below.
  */
 export function Nav() {
   const [open, setOpen] = React.useState(false);
+  const root = React.useRef<HTMLElement>(null);
   const closeMenu = () => setOpen(false);
+
+  useGSAP(
+    () => {
+      const navEl = root.current;
+      if (!navEl) return;
+
+      // Scrolled background state: a legibility toggle (opaque header once
+      // content scrolls under it), not decorative motion, so it stays on
+      // even under reduced motion -- matches the approved prototype, which
+      // creates this ScrollTrigger before its reduced-motion early return.
+      ScrollTrigger.create({
+        start: "top -60",
+        end: 99999,
+        onUpdate: (self) => {
+          navEl.classList.toggle("scrolled", self.scroll() > 60);
+        },
+      });
+
+      if (prefersReducedMotion()) return;
+
+      const links = gsap.utils.toArray<HTMLAnchorElement>(".nav-link", navEl);
+      const sections = gsap.utils.toArray<HTMLElement>("section[data-clip]");
+
+      sections.forEach((sec) => {
+        const link = links.find(
+          (a) => a.getAttribute("href") === `#${sec.id}`
+        );
+        if (!link) return;
+        ScrollTrigger.create({
+          trigger: sec,
+          start: "top 55%",
+          end: "bottom 55%",
+          onToggle: (self) => {
+            if (!self.isActive) return;
+            links.forEach((a) => a.classList.remove("active"));
+            link.classList.add("active");
+          },
+        });
+      });
+    },
+    { scope: root }
+  );
 
   return (
     <header
       id="nav"
+      ref={root}
       className="fixed inset-x-0 top-0 z-[80] flex h-[68px] items-center border-b border-transparent bg-transparent transition-[background-color,border-color] duration-[400ms] ease-[var(--ease)] [&.scrolled]:border-[color:var(--line)] [&.scrolled]:bg-canvas/[0.72] [&.scrolled]:backdrop-blur-[14px]"
     >
       <div className="wrap flex w-full items-center justify-between gap-4">
