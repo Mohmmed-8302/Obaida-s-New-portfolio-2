@@ -3,27 +3,35 @@
 @tailwind utilities;
 
 /* ═══════════════════════  THE CUTTING ROOM  ═══════════════════════
-   Dark-committed cinematic canvas. Single ember accent. Grotesque +
-   mono type. NLE/timeline motifs. Source of truth:
-   docs/design/cutting-room-prototype.html
+   Light-committed cinematic canvas -- "Slate & Rose" brand palette.
+   Blush White page, Blue Slate headings, Storm body text/UI containers,
+   Dusty Rose expressive accent. Grotesque + mono type. NLE/timeline
+   motifs preserved from the original dark build; only the color system
+   changed. Source of truth: docs/design/cutting-room-prototype.html
    ════════════════════════════════════════════════════════════════ */
 
 /* ─────────────────────  DESIGN TOKENS (raw)  ─────────────────────── */
 @layer base {
   :root {
-    --bg: #0b0c0e;
-    --panel: #101216;
-    --elev: #16191f;
-    --line: rgba(255, 255, 255, 0.08);
-    --line-2: rgba(255, 255, 255, 0.15);
-    --text: #f3efe8;
-    --dim: #8a8f97;
-    --dim-2: #5c616a;
-    --accent: #ff6a3d;
-    --accent-soft: #ff8a63;
-    --accent-deep: #c8431f;
-    --accent-glow: rgba(255, 106, 61, 0.18);
-    --accent-foreground: #1a0d07;
+    /* Slate & Rose (WCAG AAA) --------------------------------------- */
+    --blush-white: #f7f3f2; /* page/app background, light surfaces */
+    --dusty-rose: #c97a8a; /* expressive accent: CTAs, icons, borders */
+    --blue-slate: #111318; /* headings & primary text */
+    --storm: #1c2028; /* body text, UI containers, footer, captions */
+
+    --bg: var(--blush-white);
+    --panel: #ffffff; /* card/panel surface -- lifted off the blush bg */
+    --elev: #f6e6ea; /* soft rose-tinted elevated/hover surface */
+    --line: rgba(28, 32, 40, 0.1); /* Storm @ 10% -- hairline borders */
+    --line-2: rgba(28, 32, 40, 0.18); /* Storm @ 18% -- stronger hairline */
+    --text: var(--blue-slate); /* headings, nav labels, logo, values */
+    --dim: var(--storm); /* body copy */
+    --dim-2: #3a4150; /* Storm, lightened -- captions/metadata */
+    --accent: var(--dusty-rose);
+    --accent-soft: #d999a6; /* lightened rose -- hover lift */
+    --accent-deep: #a85a6b; /* deepened rose -- borders/shadows/scrollbar */
+    --accent-glow: rgba(201, 122, 138, 0.18);
+    --accent-foreground: var(--blue-slate); /* text ON TOP of Dusty Rose fills */
 
     --display: "Bricolage Grotesque", "Arial Black", sans-serif;
     --body: "Hanken Grotesk", system-ui, sans-serif;
@@ -34,7 +42,7 @@
     --ease: cubic-bezier(0.16, 1, 0.3, 1);
     --radius: 6px;
 
-    /* shadcn semantic aliases (dark-committed, no theme switch) */
+    /* shadcn semantic aliases (light-committed, no theme switch) */
     --border: var(--line);
     --input: var(--line-2);
     --ring: var(--accent);
@@ -66,7 +74,8 @@
     text-rendering: optimizeLegibility;
   }
 
-  /* subtle filmic grain + vignette, fixed and non-interactive */
+  /* subtle filmic vignette + rose glow, fixed and non-interactive.
+     Storm at low opacity (not black) so the light canvas stays clean. */
   body::before {
     content: "";
     position: fixed;
@@ -74,7 +83,7 @@
     pointer-events: none;
     z-index: 90;
     background:
-      radial-gradient(120% 90% at 50% 0%, transparent 55%, rgba(0, 0, 0, 0.55) 100%),
+      radial-gradient(120% 90% at 50% 0%, transparent 55%, rgba(28, 32, 40, 0.05) 100%),
       radial-gradient(80% 60% at 50% 120%, var(--accent-glow), transparent 60%);
     opacity: 0.9;
   }
@@ -171,7 +180,7 @@
     bottom: 0;
     width: var(--rail);
     border-right: 1px solid var(--line);
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent);
+    background: linear-gradient(180deg, rgba(28, 32, 40, 0.03), transparent);
     z-index: 70;
     display: none;
     flex-direction: column;

@@ -7,18 +7,18 @@ import { cn } from "@/lib/utils";
 /**
  * Pill button system — The Cutting Room.
  * All variants are fully rounded (border-radius: 999px) per the design plan.
- * Primary: ember fill, lift + ember glow on hover, settle+scale on press.
- * Ghost: hairline border, ember border/text on hover.
+ * Primary: Dusty Rose fill, lift + rose glow on hover, settle+scale on press.
+ * Ghost: hairline border, rose border/text on hover.
  */
 const buttonVariants = cva(
   "group/btn inline-flex items-center justify-center gap-2.5 whitespace-nowrap rounded-full font-mono text-[12.5px] uppercase tracking-[0.08em] transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-canvas disabled:pointer-events-none disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 will-change-transform",
   {
     variants: {
       variant: {
-        // ember fill, dark ink text — primary CTA
+        // Dusty Rose fill, Blue Slate text — primary CTA
         primary:
-          "bg-accent text-[#1a0d07] font-semibold hover:-translate-y-0.5 hover:bg-[color:var(--accent-soft)] hover:shadow-[0_10px_30px_var(--accent-glow)] active:translate-y-0 active:scale-[0.98]",
-        // hairline outline — fills to ember on hover
+          "bg-accent text-accent-foreground font-semibold hover:-translate-y-0.5 hover:bg-[color:var(--accent-soft)] hover:shadow-[0_10px_30px_var(--accent-glow)] active:translate-y-0 active:scale-[0.98]",
+        // hairline outline — fills to Dusty Rose on hover
         ghost:
           "border border-[color:var(--line-2)] bg-transparent text-text hover:-translate-y-0.5 hover:border-accent hover:text-accent active:translate-y-0 active:scale-[0.98]",
         // neutral hairline — tertiary

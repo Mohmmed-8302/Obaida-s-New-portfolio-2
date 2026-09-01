@@ -60,7 +60,7 @@ function VideoCard({ video }: { video: VideoItem }) {
 
       {!playing && (
         <div className="absolute left-1/2 top-1/2 flex h-[52px] w-[52px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-[color:var(--line-2)] bg-canvas/55 backdrop-blur-[4px] transition-all duration-300 ease-[var(--ease)] group-hover:scale-110 group-hover:bg-accent">
-          <span className="ml-[3px] h-0 w-0 border-y-[7px] border-l-[12px] border-y-transparent border-l-text transition-colors group-hover:border-l-[#1a0d07]" />
+          <span className="ml-[3px] h-0 w-0 border-y-[7px] border-l-[12px] border-y-transparent border-l-text transition-colors group-hover:border-l-accent-foreground" />
         </div>
       )}
 

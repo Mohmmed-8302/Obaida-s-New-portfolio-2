@@ -7,8 +7,10 @@ const badgeVariants = cva(
   {
     variants: {
       variant: {
+        // solid Dusty Rose fill + Blue Slate text keeps badge copy AAA-legible
+        // (rose text on a rose-tinted background falls well short of AAA).
         default:
-          "border border-[color:var(--accent-deep)]/40 bg-[color:var(--accent-glow)] px-3.5 py-1.5 text-accent",
+          "border border-[color:var(--accent-deep)] bg-accent px-3.5 py-1.5 text-accent-foreground",
         slate: "border border-[color:var(--line)] bg-panel px-3 py-1 text-dim",
       },
     },
