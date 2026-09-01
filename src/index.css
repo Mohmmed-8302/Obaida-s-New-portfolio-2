@@ -291,6 +291,181 @@
   }
 }
 
+/* ═══════════════════  HERO — SLATE & ROSE (light)  ═══════════════════
+   The hero sits on its own Blush White canvas inside the otherwise dark
+   Cutting Room shell: a scoped token override (so every shared utility --
+   .mono, Button, the stats grid, [color:var(--line)] -- picks up the light
+   values for free) punched to z-index:95 so it renders above the fixed
+   body::before grain/vignette (z-index:90), which is tuned for a dark page
+   and would otherwise muddy a light section. Signature motif: an orbit line
+   + sparkle pair threading an oversized name wordmark, one restrained rose
+   accent, corner meta labels. Source: client ref "download.jpg".
+   ═══════════════════════════════════════════════════════════════════ */
+@layer components {
+  #hero {
+    --bg: #f7f3f2;
+    --text: #111318;
+    --dim: rgba(28, 32, 40, 0.66);
+    --dim-2: rgba(28, 32, 40, 0.42);
+    --line: rgba(17, 19, 24, 0.12);
+    --line-2: rgba(17, 19, 24, 0.22);
+    --accent: #c97a8a;
+    --accent-soft: #dd9aa8;
+    --accent-deep: #8c4a5c;
+    --accent-glow: rgba(201, 122, 138, 0.32);
+
+    position: relative;
+    isolation: isolate;
+    z-index: 95;
+    overflow: clip;
+    background: var(--bg);
+    color: var(--text);
+  }
+
+  /* soft gradient accent orb, blurred behind the wordmark */
+  .hero-orb {
+    position: absolute;
+    top: 4%;
+    right: 2%;
+    width: min(48vw, 640px);
+    height: min(48vw, 640px);
+    border-radius: 50%;
+    background: radial-gradient(
+      circle at 42% 38%,
+      var(--accent-soft) 0%,
+      var(--accent) 34%,
+      transparent 70%
+    );
+    filter: blur(64px);
+    opacity: 0.5;
+    pointer-events: none;
+    z-index: 0;
+    animation: hero-orb-drift 16s ease-in-out infinite;
+  }
+  @keyframes hero-orb-drift {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+    50% {
+      transform: translate3d(-16px, 20px, 0) scale(1.05);
+    }
+  }
+
+  /* corner meta labels */
+  .hero-era {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .hero-era::before {
+    content: "";
+    width: 34px;
+    height: 1px;
+    background: var(--line-2);
+  }
+  .hero-tag {
+    border: 1px solid var(--line-2);
+    border-radius: 999px;
+    padding: 7px 15px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text);
+  }
+
+  /* oversized name wordmark + orbit/sparkle signature */
+  .hero-mark {
+    position: relative;
+    display: inline-block;
+    isolation: isolate;
+  }
+  .hero-name {
+    display: inline-block;
+  }
+  .hero-letter {
+    display: inline-block;
+    will-change: transform;
+  }
+  .hero-orbit {
+    position: absolute;
+    inset: -18% -8%;
+    width: 116%;
+    height: 136%;
+    pointer-events: none;
+    z-index: 2;
+    overflow: visible;
+    transform-origin: 50% 50%;
+    animation: hero-orbit-spin 52s linear infinite;
+  }
+  .hero-orbit ellipse {
+    fill: none;
+    stroke: var(--accent-deep);
+    stroke-width: 1.1;
+    opacity: 0.55;
+  }
+  @keyframes hero-orbit-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  .hero-spark {
+    position: absolute;
+    z-index: 3;
+    color: var(--accent-deep);
+    pointer-events: none;
+  }
+  .hero-spark--a {
+    top: 2%;
+    right: 6%;
+    width: 22px;
+    height: 22px;
+  }
+  .hero-spark--b {
+    bottom: 8%;
+    left: -2%;
+    width: 15px;
+    height: 15px;
+  }
+
+  /* closing meta row: copyright + scroll cue */
+  .hero-copyright {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    line-height: 1.6;
+    color: var(--dim);
+  }
+  .hero-scroll-cue {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--dim);
+    transition: color 0.2s ease-out;
+  }
+  .hero-scroll-cue:hover {
+    color: var(--accent-deep);
+  }
+  .hero-scroll-cue svg {
+    transition: transform 0.25s var(--ease);
+  }
+  .hero-scroll-cue:hover svg {
+    transform: translateY(3px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-orb,
+    .hero-orbit {
+      animation: none;
+    }
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.001ms !important;
