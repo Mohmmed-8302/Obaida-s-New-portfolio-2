@@ -41,7 +41,13 @@ export function Rail() {
       });
 
       // Active-clip label: whichever section is centered updates #railClip.
-      const sections = gsap.utils.toArray<HTMLElement>("section[data-clip]");
+      // Pass `document` explicitly: inside a scoped useGSAP context, a bare
+      // selector is auto-scoped to `root` (the .rail div), which contains no
+      // sections. Scope to the document so the sections under <main> resolve.
+      const sections = gsap.utils.toArray<HTMLElement>(
+        "section[data-clip]",
+        document
+      );
       sections.forEach((sec) => {
         ScrollTrigger.create({
           trigger: sec,

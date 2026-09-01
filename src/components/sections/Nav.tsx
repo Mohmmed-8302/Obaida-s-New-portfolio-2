@@ -35,7 +35,13 @@ export function Nav() {
       if (prefersReducedMotion()) return;
 
       const links = gsap.utils.toArray<HTMLAnchorElement>(".nav-link", navEl);
-      const sections = gsap.utils.toArray<HTMLElement>("section[data-clip]");
+      // Pass `document` explicitly: inside a scoped useGSAP context, a bare
+      // selector is auto-scoped to `root` (the <header>), which contains no
+      // sections. The sections live under <main>, so scope to the document.
+      const sections = gsap.utils.toArray<HTMLElement>(
+        "section[data-clip]",
+        document
+      );
 
       sections.forEach((sec) => {
         const link = links.find(
