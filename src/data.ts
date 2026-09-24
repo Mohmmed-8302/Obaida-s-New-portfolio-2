@@ -72,7 +72,6 @@ export const SERVICES = [
   { n: "01", label: "Short-Form Editing", note: "Reels · Shorts · TikTok" },
   { n: "02", label: "Motion Graphics & VFX", note: "Titles · Transitions · FX" },
   { n: "03", label: "Portfolio & Web Design", note: "Brand · Layout · Polish" },
-  { n: "04", label: "Hook & Thumbnail Design", note: "Stop-the-scroll first frames" },
 ];
 
 export const JOURNEY = [

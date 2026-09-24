@@ -93,7 +93,7 @@ function VideoCard({ video }: { video: VideoItem }) {
         </div>
         <div
           dir="rtl"
-          className="mt-1.5 font-display text-[1.05rem] font-bold leading-[1.2] text-text"
+          className="mt-1.5 font-display text-[1.05rem] font-bold leading-[1.2] text-[#F5E3DE]"
         >
           {video.title}
         </div>

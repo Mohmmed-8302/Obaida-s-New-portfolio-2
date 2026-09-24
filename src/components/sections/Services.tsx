@@ -26,14 +26,14 @@ export function Services() {
             What you can hire me for.
           </h2>
           <p className="mt-[18px] max-w-[56ch] text-dim">
-            Four things I do well, end to end. Pick one or stack them into a
+            Three things I do well, end to end. Pick one or stack them into a
             full content pipeline.
           </p>
         </div>
 
         <div
           data-reveal
-          className="grid gap-px overflow-hidden rounded-[4px] border border-[color:var(--line)] bg-[color:var(--line)] sm:grid-cols-2"
+          className="grid gap-px overflow-hidden rounded-[4px] border border-[color:var(--line)] bg-[color:var(--line)] sm:grid-cols-3"
         >
           {SERVICES.map((s) => (
             <div
